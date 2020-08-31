@@ -101,15 +101,15 @@ public class StickChart extends PictureComponent {
                 Styles.Y_COOR_LABEL_COUNT);
     }
 
-    private void paintStick(int index, double open, double high, double low, double close) {
-        var labels = getYLabels();
+    private void paintStick(int index, double open, double high, double low,
+                            double close, double coordMin, double coordMax) {
         var begX = getBegPixelX(index);
         var endX = getEndPixelX(index);
         var midX = begX + (int)(xPaintNodeWidth() / 2);
-        var pixelOpen = getPixelY(open, labels[0], labels[labels.length-1]);
-        var pixelHigh = getPixelY(high, labels[0], labels[labels.length-1]);
-        var pixelLow = getPixelY(low, labels[0], labels[labels.length-1]);
-        var pixelClose = getPixelY(close, labels[0], labels[labels.length-1]);
+        var pixelOpen = getPixelY(open, coordMin, coordMax);
+        var pixelHigh = getPixelY(high, coordMin, coordMax);
+        var pixelLow = getPixelY(low, coordMin, coordMax);
+        var pixelClose = getPixelY(close, coordMin, coordMax);
         var oldColor = getColor();
         var oldStroke = getStroke();
         // Set up styles.
@@ -136,12 +136,15 @@ public class StickChart extends PictureComponent {
                 || low.getCount() != close.getCount())
             throw new DimensionNotMatchException("stick dimension not matched");
         // Stick chart is painted on top of grid and coordinates, don't clear.
+        var labels = getYLabels();
         for (int i = 0; i < open.getCount(); ++i)
             paintStick(
                     i,
                     open.getData()[i],
                     high.getData()[i],
                     low.getData()[i],
-                    close.getData()[i]);
+                    close.getData()[i],
+                    labels[0],
+                    labels[labels.length-1]);
     }
 }
