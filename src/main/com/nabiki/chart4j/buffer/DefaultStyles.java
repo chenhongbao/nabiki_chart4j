@@ -51,9 +51,9 @@ public class DefaultStyles {
 
     public static Color GRID_DASHLINE_COLOR = Color.BLUE;
     public static Color GRID_LINE_COLOR = Color.BLUE;
-    public static Color COOR_LINE_COLOR = Color.BLUE;
-    public static Color COOR_LABEL_COLOR = Color.BLUE;
-    public static int COOR_TICK_LENGTH = 5;
+    public static Color AXIS_LINE_COLOR = Color.BLUE;
+    public static Color AXIS_LABEL_COLOR = Color.BLUE;
+    public static int AXIS_TICK_LENGTH = 5;
 
     public static Color STICK_UP_COLOR = Color.RED;
     public static Color STICK_DOWN_COLOR = new Color(23, 145, 45);

@@ -97,12 +97,22 @@ public abstract class ImageXY extends ImageCanvas implements XYCoordinate {
 
     @Override
     public double[] getShowLabelX() {
-        return getPreferredLabels(minX, maxX, preferredLabelCountX);
+        return getPreferredLabels(minX, maxX, getPreferredLabelCountX());
     }
 
     @Override
     public double[] getShowLabelY() {
-        return getPreferredLabels(minY, maxY, preferredLabelCountY);
+        return getPreferredLabels(minY, maxY, getPreferredLabelCountY());
+    }
+
+    @Override
+    public int getVisiblePixelX(double x) {
+        return (int)Math.round(x * getVisibleSize()[0] / (maxX - minX));
+    }
+
+    @Override
+    public int getVisiblePixelY(double y) {
+        return (int)Math.round((maxY - y) * getVisibleSize()[1] / (maxY - minY));
     }
 
     protected double[] getPreferredLabels(double min, double max, int num) {

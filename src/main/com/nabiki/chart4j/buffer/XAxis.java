@@ -60,12 +60,39 @@ public class XAxis extends ImageCanvas implements Axis {
     public void mapLabels(Map<Double, String> m) {
         map.clear();
         if (m != null)
-            map.putAll(map);
+            map.putAll(m);
     }
-
 
     @Override
     public void paint() {
-        // TODO paint x-axis.
+        clear();
+        var labels = xy.getShowLabelX();
+        for (var label : labels)
+            paintLabel(label);
+    }
+
+    private void paintLabel(double label) {
+        var oldColor = getColor();
+        // Draw axis tick.
+        setColor(DefaultStyles.AXIS_LINE_COLOR);
+        int x = xy.getVisiblePixelX(label);
+        drawVisibleLine(x, 0, x, DefaultStyles.AXIS_TICK_LENGTH);
+        // Draw axis label.
+        setColor(DefaultStyles.AXIS_LABEL_COLOR);
+        var str = getLabelString(label);
+        int xOff = getStringWidth(str) / 2;
+        drawVisibleString(
+                str,
+                x - xOff,
+                getFont().getSize() + DefaultStyles.AXIS_TICK_LENGTH);
+        setColor(oldColor);
+    }
+
+    private String getLabelString(double label) {
+        var str = map.get(label);
+        if (str == null)
+            return String.format("%.1f", label);
+        else
+            return str;
     }
 }

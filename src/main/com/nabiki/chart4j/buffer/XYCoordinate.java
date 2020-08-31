@@ -48,4 +48,8 @@ public interface XYCoordinate {
     double[] getShowLabelX();
 
     double[] getShowLabelY();
+
+    int getVisiblePixelX(double x);
+
+    int getVisiblePixelY(double y);
 }
