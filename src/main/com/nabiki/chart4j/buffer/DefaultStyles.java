@@ -33,9 +33,9 @@ import java.awt.*;
 public class DefaultStyles {
     public static int AXIS_DEFAULT_LABEL_COUNT = 7;
 
-    public static int DEPTHVIEW_BLANK_WIDTH = 30;
-    public static float DEPTHVIEW_FONT_SIZE = 18;
-    public static float DEPTHVIEW_FONT_LINESEP = 1.5F;
+    public static int TEXTVIEW_FONT_BLANK_WIDTH = 15;
+    public static float TEXTVIEW_FONT_SIZE = 18;
+    public static float TEXTVIEW_FONT_LINESEP = 1.5F;
 
     public static double X_NODE_BLANK_PORTION = 0.25;
 
