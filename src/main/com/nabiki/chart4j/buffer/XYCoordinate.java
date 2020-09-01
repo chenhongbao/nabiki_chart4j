@@ -49,7 +49,7 @@ public interface XYCoordinate {
 
     double[] getShowLabelY();
 
-    int getVisiblePixelX(double x);
+    int getVisiblePixelX(double x, double axisMin, double axisMax);
 
-    int getVisiblePixelY(double y);
+    int getVisiblePixelY(double y, double axisMin, double axisMax);
 }

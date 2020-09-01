@@ -29,53 +29,28 @@
 package com.nabiki.chart4j.buffer;
 
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
-import java.util.Map;
 
-public class XAxis extends ImageCanvas implements Axis {
-    private String name;
-    private XYCoordinate xy;
-    private final Map<Double, String> map = new HashMap<>();
+public class XAxis extends AbstractAxis {
 
     public XAxis(BufferedImage image) {
         super(image);
     }
 
-    @Override
-    public void setName(String name) {
-        this.name = name;
+    public void bindCanvas(ImageCanvas canvas) {
+        var size = canvas.getSize();
+        var offset = canvas.getOffset();
+        var margin = canvas.getMargin();
+        setSize(size[0], DefaultStyles.AXIS_X_HEIGHT);
+        setOffset(offset[0], offset[1] + size[1] + 1);
+        setMargin(0, margin[1], 0, margin[3]);
     }
 
     @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public void bind(XYCoordinate xy) {
-        this.xy = xy;
-    }
-
-    @Override
-    public void mapLabels(Map<Double, String> m) {
-        map.clear();
-        if (m != null)
-            map.putAll(m);
-    }
-
-    @Override
-    public void paint() {
-        clear();
-        var labels = xy.getShowLabelX();
-        for (var label : labels)
-            paintLabel(label);
-    }
-
-    private void paintLabel(double label) {
+    protected void paintLabel(double label, double axisMin, double axisMax) {
         var oldColor = getColor();
         // Draw axis tick.
         setColor(DefaultStyles.AXIS_LINE_COLOR);
-        int x = xy.getVisiblePixelX(label);
+        int x = xy.getVisiblePixelX(label, axisMin, axisMax);
         drawVisibleLine(x, 0, x, DefaultStyles.AXIS_TICK_LENGTH);
         // Draw axis label.
         setColor(DefaultStyles.AXIS_LABEL_COLOR);
@@ -84,15 +59,15 @@ public class XAxis extends ImageCanvas implements Axis {
         drawVisibleString(
                 str,
                 x - xOff,
-                getFont().getSize() + DefaultStyles.AXIS_TICK_LENGTH);
+                getFont().getSize() + DefaultStyles.AXIS_TICK_LENGTH * 2);
         setColor(oldColor);
     }
 
-    private String getLabelString(double label) {
-        var str = map.get(label);
-        if (str == null)
-            return String.format("%.1f", label);
-        else
-            return str;
+    @Override
+    public void paint() {
+        clear();
+        var labels = xy.getShowLabelX();
+        for (var label : labels)
+            paintLabel(label, labels[0], labels[labels.length - 1]);
     }
 }

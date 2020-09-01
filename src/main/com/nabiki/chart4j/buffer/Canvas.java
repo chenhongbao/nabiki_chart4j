@@ -63,6 +63,8 @@ public interface Canvas {
 
     Stroke getStroke();
 
+    void showBox(boolean show);
+
     void setColor(Color color);
 
     Color getColor();

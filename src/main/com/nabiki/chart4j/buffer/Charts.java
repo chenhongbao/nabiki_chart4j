@@ -26,18 +26,30 @@
  * SOFTWARE.
  */
 
-package com.nabiki.chart4j.parts.exceptions;
+package com.nabiki.chart4j.buffer;
 
-public class CoordinateLabelNotMatchException extends RuntimeException {
-    public CoordinateLabelNotMatchException(String message) {
-        super(message);
+import com.nabiki.chart4j.exception.ValueNotSameException;
+
+public class Charts {
+    public static void requireSame(int... vars) {
+        if (vars.length > 1) {
+            for (int i = 1; i < vars.length; ++i)
+                if (vars[i-1] != vars[i])
+                    throw new ValueNotSameException(vars[i-1] + "!=" + vars[i]);
+        }
     }
 
-    public CoordinateLabelNotMatchException(String message, Throwable cause) {
-        super(message, cause);
+    public static double max(double...vars) {
+        double m = -Double.MAX_VALUE;
+        for (var v : vars)
+            m = Math.max(m, v);
+        return m;
     }
 
-    public CoordinateLabelNotMatchException(Throwable cause) {
-        super(cause);
+    public static double min(double...vars) {
+        double m = Double.MAX_VALUE;
+        for (var v : vars)
+            m = Math.min(m, v);
+        return m;
     }
 }

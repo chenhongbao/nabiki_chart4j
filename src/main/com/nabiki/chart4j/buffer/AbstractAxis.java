@@ -26,45 +26,50 @@
  * SOFTWARE.
  */
 
-package com.nabiki.chart4j.parts.images;
+package com.nabiki.chart4j.buffer;
 
-import org.junit.Test;
-
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
-public class DepthViewTest {
-    @Test
-    public void basic() {
-        var image = new BufferedImage(
-                500,
-                500,
-                BufferedImage.TYPE_INT_RGB);
+public abstract class AbstractAxis extends ImageCanvas implements Axis {
+    protected final Map<Double, String> map = new HashMap<>();
+    protected String name;
+    protected XYCoordinate xy;
 
-        var depthView = new DepthView(
-                image.createGraphics(),
-                200,
-                200);
-        var m = depthView.getValueMap();
-        m.put("合约代码", new DepthView.DepthViewValue("c2101", null));
-        m.put("开盘", new DepthView.DepthViewValue(2267.0D, null));
-        m.put("收盘", new DepthView.DepthViewValue(2268.0F, Styles.FONT_UP_COLOR));
-        m.put("结算", new DepthView.DepthViewValue(2263.0F, Styles.FONT_DOWN_COLOR));
+    public AbstractAxis(BufferedImage image) {
+        super(image);
+    }
 
-        depthView.setMargin(10, 10, 10, 10);
-        depthView.setOffset(100, 100);
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
 
-        depthView.paint();
+    @Override
+    public String getName() {
+        return name;
+    }
 
-        try {
-            ImageIO.write(
-                    image,
-                    "png",
-                    new File("C:\\Users\\chenh\\Desktop\\depth_view.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    @Override
+    public void bindXY(XYCoordinate xy) {
+        this.xy = xy;
+    }
+
+    @Override
+    public void mapLabels(Map<Double, String> m) {
+        map.clear();
+        if (m != null)
+            map.putAll(m);
+    }
+
+    protected abstract void paintLabel(double label, double axisMin, double axisMax);
+
+    protected String getLabelString(double label) {
+        var str = map.get(label);
+        if (str == null)
+            return String.format("%.1f", label);
+        else
+            return str;
     }
 }

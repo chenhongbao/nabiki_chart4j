@@ -26,18 +26,18 @@
  * SOFTWARE.
  */
 
-package com.nabiki.chart4j.parts.exceptions;
+package com.nabiki.chart4j.exception;
 
-public class EmptySeriesException extends RuntimeException {
-    public EmptySeriesException(String message) {
+public class ValueNotSameException extends RuntimeException {
+    public ValueNotSameException(String message) {
         super(message);
     }
 
-    public EmptySeriesException(String message, Throwable cause) {
+    public ValueNotSameException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public EmptySeriesException(Throwable cause) {
+    public ValueNotSameException(Throwable cause) {
         super(cause);
     }
 }

@@ -26,18 +26,48 @@
  * SOFTWARE.
  */
 
-package com.nabiki.chart4j.parts.exceptions;
+package com.nabiki.chart4j.buffer;
 
-public class LabelDataNotMatchException extends RuntimeException {
-    public LabelDataNotMatchException(String message) {
-        super(message);
+import java.awt.image.BufferedImage;
+
+public class YAxis extends AbstractAxis {
+
+    public YAxis(BufferedImage image) {
+        super(image);
     }
 
-    public LabelDataNotMatchException(String message, Throwable cause) {
-        super(message, cause);
+    public void bindCanvas(ImageCanvas canvas) {
+        var size = canvas.getSize();
+        var offset = canvas.getOffset();
+        var margin = canvas.getMargin();
+        setSize(DefaultStyles.AXIS_Y_WIDTH, size[1]);
+        setOffset(offset[0] + size[0] + 1, offset[1]);
+        setMargin(margin[0], 0, margin[2], 0);
     }
 
-    public LabelDataNotMatchException(Throwable cause) {
-        super(cause);
+    @Override
+    protected void paintLabel(double label, double axisMin, double axisMax) {
+        var oldColor = getColor();
+        // Draw axis tick.
+        setColor(DefaultStyles.AXIS_LINE_COLOR);
+        int y = xy.getVisiblePixelY(label, axisMin, axisMax);
+        drawVisibleLine(0, y, DefaultStyles.AXIS_TICK_LENGTH, y);
+        // Draw axis label.
+        setColor(DefaultStyles.AXIS_LABEL_COLOR);
+        var str = getLabelString(label);
+        int yOff = getFont().getSize() / 2;
+        drawVisibleString(
+                str,
+                DefaultStyles.AXIS_TICK_LENGTH * 2,
+                y + yOff);
+        setColor(oldColor);
+    }
+
+    @Override
+    public void paint() {
+        clear();
+        var labels = xy.getShowLabelY();
+        for (var label : labels)
+            paintLabel(label, labels[0], labels[labels.length - 1]);
     }
 }

@@ -39,7 +39,7 @@ public class DefaultStyles {
 
     public static double X_NODE_BLANK_PORTION = 0.25;
 
-    public static Stroke DASHLINE_STROKE = new BasicStroke(
+    public static Stroke GRID_DASHLINE_STROKE = new BasicStroke(
             1,
             BasicStroke.CAP_ROUND,
             BasicStroke.JOIN_ROUND,
@@ -54,6 +54,8 @@ public class DefaultStyles {
     public static Color AXIS_LINE_COLOR = Color.BLUE;
     public static Color AXIS_LABEL_COLOR = Color.BLUE;
     public static int AXIS_TICK_LENGTH = 5;
+    public static int AXIS_X_HEIGHT = 30;
+    public static int AXIS_Y_WIDTH = 50;
 
     public static Color STICK_UP_COLOR = Color.RED;
     public static Color STICK_DOWN_COLOR = new Color(23, 145, 45);

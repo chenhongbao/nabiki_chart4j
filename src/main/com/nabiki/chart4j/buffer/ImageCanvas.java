@@ -47,6 +47,7 @@ public abstract class ImageCanvas implements Canvas {
         this.g2d = image.createGraphics();
         size[0] = image.getWidth();
         size[1] = image.getHeight();
+        setBackground(DefaultStyles.CANVAS_BG_COLOR);
     }
 
     @Override
@@ -63,8 +64,8 @@ public abstract class ImageCanvas implements Canvas {
                     String.format("canvas size(%d,%d) overflow", width, height));
         size[0] = width;
         size[1] = height;
-        visibleSize[0] -= (getMargin()[1] + getMargin()[3]);
-        visibleSize[1] -= (getMargin()[0] + getMargin()[2]);
+        visibleSize[0] = size[0] - (getMargin()[1] + getMargin()[3]);
+        visibleSize[1] = size[1] - (getMargin()[0] + getMargin()[2]);
     }
 
     @Override
@@ -130,12 +131,12 @@ public abstract class ImageCanvas implements Canvas {
 
     @Override
     public void drawVisibleRect(int x, int y, int width, int height) {
-        g2d.drawRect(getVisibleX(x), getVisibleY(y), getSize()[0], getSize()[1]);
+        g2d.drawRect(getVisibleX(x), getVisibleY(y), width, height);
     }
 
     @Override
     public void fillVisibleRect(int x, int y, int width, int height) {
-        g2d.fillRect(getVisibleX(x), getVisibleY(y), getSize()[0], getSize()[1]);
+        g2d.fillRect(getVisibleX(x), getVisibleY(y), width, height);
     }
 
     @Override
@@ -213,6 +214,27 @@ public abstract class ImageCanvas implements Canvas {
         for (int i = 0; i < text.length(); i++)
             width += metrics.charWidth(text.charAt(i));
         return width;
+    }
+
+    @Override
+    public void showBox(boolean show) {
+        Color color;
+        if (show)
+            color = DefaultStyles.GRID_LINE_COLOR;
+        else
+            color = getBackground();
+        paintBox(color);
+    }
+
+    private void paintBox(Color color) {
+        var size = getSize();
+        var oldColor = getColor();
+        setColor(color);
+        drawLine(0, 0, size[0], 0);
+        drawLine(size[0], 0, size[0], size[1]);
+        drawLine(0, size[1], size[0], size[1]);
+        drawLine(0, 0, 0, size[1]);
+        setColor(oldColor);
     }
 
     protected int getCanvasX(int x) {

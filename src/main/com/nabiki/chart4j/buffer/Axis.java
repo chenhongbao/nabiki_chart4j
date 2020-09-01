@@ -35,7 +35,7 @@ public interface Axis {
 
     String getName();
 
-    void bind(XYCoordinate xy);
+    void bindXY(XYCoordinate xy);
 
     void mapLabels(Map<Double, String> map);
 }

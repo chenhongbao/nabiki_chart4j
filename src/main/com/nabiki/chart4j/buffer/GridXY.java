@@ -26,51 +26,52 @@
  * SOFTWARE.
  */
 
-package com.nabiki.chart4j.parts.images;
+package com.nabiki.chart4j.buffer;
 
-import org.junit.Test;
-
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
-public class XYGridTest {
-    @Test
-    public void basic() {
-        var image = new BufferedImage(
-                500,
-                600,
-                BufferedImage.TYPE_INT_ARGB);
+public class GridXY extends ImageXY {
+    public GridXY(BufferedImage image) {
+        super(image);
+    }
 
-        var series = new TimeSeries();
-        series.setName("test series");
-        series.setSeries(
-                new double[] {4.5, 14.2, 9.15, 13, 23.5, 16.5},
-                new String[] {"8月1日", "8月2日", "8月3日", "8月4日", "8月5日", "8月6日"});
+    @Override
+    public void paint() {
+        clear();
+        showBox(true);
+        paintDashGrid();
+    }
 
-        var grid = new XYGrid(image.createGraphics(), series, 200, 300);
-        grid.setOffset(100, 200);
-        grid.setMargin(10, 20, 30, 40);
-        grid.paint();
+    private void gridLH(double label, double axisMin, double axisMax) {
+        var y = getVisiblePixelY(label, axisMin, axisMax) + getMargin()[0];
+        drawLine(0, y, getSize()[0], y);
+    }
 
-        var yCoord = new YCoordinate(image.createGraphics(),series, 50, 300);
-        yCoord.setOffset(300, 200);
-        yCoord.setMargin(10, 0, 30, 0);
-        yCoord.paint();
+    private void gridV(double label, double axisMin, double axisMax) {
+        var x = getVisiblePixelX(label, axisMin, axisMax) + getMargin()[3];
+        drawLine(x, 0, x, getSize()[1]);
+    }
 
-        var xCoord = new XCoordinate(image.createGraphics(),series, 200, 50);
-        xCoord.setOffset(100, 500);
-        xCoord.setMargin(0, 10, 0, 40);
-        xCoord.paint();
+    private void paintGridH() {
+        var labels = getShowLabelY();
+        for (var label : labels)
+            gridLH(label, labels[0], labels[labels.length - 1]);
+    }
 
-        try {
-            ImageIO.write(
-                    image,
-                    "png",
-                    new File("C:\\Users\\chenh\\Desktop\\grid.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private void paintGridV() {
+        var labels = getShowLabelX();
+        for (var label : labels)
+            gridV(label, labels[0], labels[labels.length - 1]);
+    }
+
+    private void paintDashGrid() {
+        var oldColor = getColor();
+        var oldStroke = getStroke();
+        setColor(DefaultStyles.GRID_DASHLINE_COLOR);
+        setStroke(DefaultStyles.GRID_DASHLINE_STROKE);
+        paintGridH();
+        paintGridV();
+        setColor(oldColor);
+        setStroke(oldStroke);
     }
 }
