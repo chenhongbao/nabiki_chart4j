@@ -28,7 +28,6 @@
 
 package com.nabiki.chart4j.buffer;
 
-import com.nabiki.chart4j.exception.CanvasMarginOverflowException;
 import com.nabiki.chart4j.exception.CanvasSizeOverflowException;
 
 import java.awt.*;
@@ -42,7 +41,14 @@ public abstract class ImageCanvas implements Canvas {
     private final int[] visibleSize = new int[2];
     private final int[] margin = new int[4];
 
+    public ImageCanvas() {
+    }
+
     public ImageCanvas(BufferedImage image) {
+        setImage(image);
+    }
+
+    public void setImage(BufferedImage image) {
         this.image = image;
         this.g2d = image.createGraphics();
         size[0] = image.getWidth();
@@ -80,10 +86,6 @@ public abstract class ImageCanvas implements Canvas {
 
     @Override
     public void setMargin(int top, int right, int bottom, int left) {
-        if (image.getWidth() < left + right || image.getHeight() < top + bottom)
-            throw new CanvasMarginOverflowException(
-                    String.format("canvas margin (%d,%d,%d,%d) overflow",
-                            top, right, bottom, left));
         margin[0] = top;
         margin[1] = right;
         margin[2] = bottom;

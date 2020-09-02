@@ -38,6 +38,8 @@ public class StickChart extends GridXY {
             low = new double[0],
             close = new double[0];
 
+    public StickChart() {}
+
     public StickChart(BufferedImage image) {
         super(image);
     }
@@ -105,7 +107,7 @@ public class StickChart extends GridXY {
         Color color;
         if (pixelOpen >  pixelClose)
             color = DefaultStyles.STICK_UP_COLOR;
-        else if (open == close)
+        else if (pixelOpen == pixelClose)
             color = DefaultStyles.STICK_FAIR_COLOR;
         else
             color = DefaultStyles.STICK_DOWN_COLOR;

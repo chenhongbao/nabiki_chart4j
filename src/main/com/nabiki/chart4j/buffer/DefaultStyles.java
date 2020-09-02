@@ -70,4 +70,6 @@ public class DefaultStyles {
     public static Color FONT_FAIR_COLOR = Color.BLUE;
 
     public static Stroke STICK_STROKE = new BasicStroke(1.0f);
+
+    public static int CHART_MARGIN = 50;
 }

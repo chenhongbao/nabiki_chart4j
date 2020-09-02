@@ -31,18 +31,16 @@ package com.nabiki.chart4j.buffer;
 import java.awt.image.BufferedImage;
 
 public class YAxis extends AbstractAxis {
+    private ImageCanvas canvas;
+
+    public YAxis() {}
 
     public YAxis(BufferedImage image) {
         super(image);
     }
 
     public void bindCanvas(ImageCanvas canvas) {
-        var size = canvas.getSize();
-        var offset = canvas.getOffset();
-        var margin = canvas.getMargin();
-        setSize(DefaultStyles.AXIS_Y_WIDTH, size[1]);
-        setOffset(offset[0] + size[0] + 1, offset[1]);
-        setMargin(margin[0], 0, margin[2], 0);
+        this.canvas = canvas;
     }
 
     @Override
@@ -65,9 +63,19 @@ public class YAxis extends AbstractAxis {
 
     @Override
     public void paint() {
+        setupAxis();
         clear();
         var labels = xy.getShowLabelY();
         for (var label : labels)
             paintLabel(label, labels[0], labels[labels.length - 1]);
+    }
+
+    private void setupAxis() {
+        var size = canvas.getSize();
+        var offset = canvas.getOffset();
+        var margin = canvas.getMargin();
+        setSize(DefaultStyles.AXIS_Y_WIDTH, size[1]);
+        setOffset(offset[0] + size[0] + 1, offset[1]);
+        setMargin(margin[0], 0, margin[2], 0);
     }
 }

@@ -40,6 +40,8 @@ public abstract class ImageXY extends ImageCanvas implements XYCoordinate {
     private int preferredLabelCountX = AXIS_DEFAULT_LABEL_COUNT,
             preferredLabelCountY = AXIS_DEFAULT_LABEL_COUNT;
 
+    public ImageXY() {}
+
     public ImageXY(BufferedImage image) {
         super(image);
         x = y =new double[0];

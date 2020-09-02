@@ -37,6 +37,8 @@ public abstract class AbstractAxis extends ImageCanvas implements Axis {
     protected String name;
     protected XYCoordinate xy;
 
+    public AbstractAxis() {}
+
     public AbstractAxis(BufferedImage image) {
         super(image);
     }
