@@ -28,6 +28,141 @@
 
 package com.nabiki.chart4j.buffer;
 
+import com.nabiki.chart4j.custom.CustomData;
+import com.nabiki.chart4j.custom.CustomType;
+
+import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
+
 public class CustomStickChart extends StickChart {
-    // TODO implement a customized stick chart that user can paint on.
+    private final Map<String, CustomData> data = new HashMap<>();
+    private final Legend legend = new Legend();
+    private boolean legendShown = true;
+
+    public CustomStickChart() {
+        legend.setMargin(
+                DefaultStyles.LEGEND_MARGIN,
+                DefaultStyles.LEGEND_MARGIN,
+                DefaultStyles.LEGEND_MARGIN,
+                DefaultStyles.LEGEND_MARGIN);
+    }
+
+    public CustomStickChart(BufferedImage image) {
+        super(image);
+        legend.setImage(image);
+        legend.setMargin(
+                DefaultStyles.LEGEND_MARGIN,
+                DefaultStyles.LEGEND_MARGIN,
+                DefaultStyles.LEGEND_MARGIN,
+                DefaultStyles.LEGEND_MARGIN);
+    }
+
+    public void addCustomData(String name, CustomType type, double[] vars) {
+        synchronized (data) {
+            data.put(name, new CustomData(name, type, vars));
+        }
+    }
+
+    public void showLegend(boolean shown) {
+        legendShown = shown;
+    }
+
+    @Override
+    public void paint() {
+        super.paint();
+        paintCustomData();
+        paintLegend();
+    }
+
+    @Override
+    public void setImage(BufferedImage image) {
+        super.setImage(image);
+        legend.setImage(image);
+    }
+
+    private void paintSingleCustomData(CustomData data) {
+        switch (data.getType().getType()) {
+            case CustomType.DOT:
+                paintCustomDot(data);
+                break;
+            case CustomType.LINE:
+                paintCustomLine(data);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void paintCustomLine(CustomData line) {
+        var xLabels = getShowLabelX();
+        var yLabels = getShowLabelY();
+        var xAxisMin = xLabels[0];
+        var xAxisMax = xLabels[xLabels.length-1];
+        var yAxisMin = yLabels[0];
+        var yAxisMax = yLabels[yLabels.length-1];
+        // Preserve color.
+        var oldColor = getColor();
+        setColor(line.getType().getColor());
+        int revIdx = 0;
+        // Previous start of line.
+        int pixelX0 = -1, pixelY0 = -1;
+        for (int i = line.getValue().length - 1;
+             0 <= i && revIdx < getX().length;
+             --i, ++revIdx) {
+            var idx = getX().length - 1 - revIdx;
+            var pixelX = getVisiblePixelX(idx, xAxisMin, xAxisMax);
+            var pixelY = getVisiblePixelY(line.getValue()[i], yAxisMin, yAxisMax);
+            if (pixelX0 >= 0 && pixelY0 >= 0)
+                drawVisibleLine(pixelX, pixelY, pixelX0, pixelY0);
+            // Move to next point.
+            pixelX0 = pixelX;
+            pixelY0 = pixelY;
+        }
+        setColor(oldColor);
+    }
+
+    private void paintCustomDot(CustomData dot) {
+        var xLabels = getShowLabelX();
+        var yLabels = getShowLabelY();
+        var xAxisMin = xLabels[0];
+        var xAxisMax = xLabels[xLabels.length-1];
+        var yAxisMin = yLabels[0];
+        var yAxisMax = yLabels[yLabels.length-1];
+        // Preserve color.
+        var oldColor = getColor();
+        setColor(dot.getType().getColor());
+        int revIdx = 0;
+        for (int i = dot.getValue().length - 1;
+             0 <= i && revIdx < getX().length;
+             --i, ++revIdx) {
+            var idx = getX().length - 1 - revIdx;
+            var pixelX = getVisiblePixelX(idx, xAxisMin, xAxisMax);
+            var pixelY = getVisiblePixelY(dot.getValue()[i], yAxisMin, yAxisMax);
+            var fromPixelX = pixelX - DefaultStyles.DOT_WIDTH / 2;
+            var toPixelX = fromPixelX + DefaultStyles.DOT_WIDTH;
+            drawVisibleLine(fromPixelX, pixelY, toPixelX, pixelY);
+        }
+        setColor(oldColor);
+    }
+
+    private void paintCustomData() {
+        for (var custom : data.values())
+            paintSingleCustomData(custom);
+    }
+
+    private void paintLegend() {
+        if (!legendShown)
+            return;
+        setLegendPosition();
+        for (var custom : data.values())
+            legend.addCustomData(custom);
+        legend.paint();
+    }
+
+    private void setLegendPosition() {
+        var offsetX = getOffset()[0] + getMargin()[0];
+        var offsetY = getOffset()[1] + getMargin()[1];
+        legend.setOffset(offsetX, offsetY);
+    }
 }

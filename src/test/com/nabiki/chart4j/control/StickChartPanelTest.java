@@ -29,6 +29,7 @@
 package com.nabiki.chart4j.control;
 
 import com.nabiki.chart4j.buffer.Charts;
+import com.nabiki.chart4j.custom.CustomType;
 import org.junit.Test;
 
 import javax.swing.*;
@@ -38,18 +39,22 @@ import java.util.concurrent.CountDownLatch;
 
 public class StickChartPanelTest {
     private double[] sampleGridY(double[] open, double[] high, double[] low,
-                                 double[] close) {
+                                 double[] close, double[] line, double[] dot) {
         var sample = Arrays.copyOf(open, open.length);
         sample[0] = Charts.max(
                 Charts.max(open),
                 Charts.max(high),
                 Charts.max(low),
-                Charts.max(close));
+                Charts.max(close),
+                Charts.max(line),
+                Charts.max(dot));
         sample[1] = Charts.min(
                 Charts.min(open),
                 Charts.min(high),
                 Charts.min(low),
-                Charts.min(close));
+                Charts.min(close),
+                Charts.min(line),
+                Charts.min(dot));
         return sample;
     }
 
@@ -61,12 +66,18 @@ public class StickChartPanelTest {
         var low = new double[] {3.0, 4.5, 4.1, 4.0, 4.1, 5.0, 6.0, 7.8, 6.5};
         var close = new double[] {5.1, 5.2, 4.2, 4.2, 4.9, 6.5, 8.6, 7.9, 6.9};
 
-        var sampleY = sampleGridY(open, high, low, close);
+        double[] line = new double[] {1.0, 2.9, 3.0, 5.7, 3.0, 2.3, 1.1, 5.4, 7.8};
+        double[] dot = new double[] {3.0, 4.9, 1.0, 7.7, 5.0, 0.3, 2.1, 1.2, 4.5};
+
+        var sampleY = sampleGridY(open, high, low, close, line, dot);
 
         var chart = new StickChartPanel();
 
         chart.setData(open, high, low, close);
         chart.setY(sampleY);
+
+        chart.addCustomData("line", new CustomType(Color.BLACK, CustomType.LINE), line);
+        chart.addCustomData("dot", new CustomType(Color.MAGENTA, CustomType.DOT), dot);
 
         var dialog = new JDialog();
 

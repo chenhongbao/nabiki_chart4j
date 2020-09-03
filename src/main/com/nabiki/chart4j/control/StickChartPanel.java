@@ -28,7 +28,11 @@
 
 package com.nabiki.chart4j.control;
 
-import com.nabiki.chart4j.buffer.*;
+import com.nabiki.chart4j.buffer.CustomStickChart;
+import com.nabiki.chart4j.buffer.DefaultStyles;
+import com.nabiki.chart4j.buffer.XAxis;
+import com.nabiki.chart4j.buffer.YAxis;
+import com.nabiki.chart4j.custom.CustomType;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -36,7 +40,7 @@ import java.awt.image.BufferedImage;
 public class StickChartPanel extends ImagePanel {
     private final XAxis x = new XAxis();
     private final YAxis y = new YAxis();
-    private final StickChart chart = new CustomStickChart();
+    private final CustomStickChart chart = new CustomStickChart();
 
     public StickChartPanel() {
         super();
@@ -53,6 +57,14 @@ public class StickChartPanel extends ImagePanel {
         synchronized (chart) {
             chart.setY(y);
         }
+    }
+
+    public void showLegend(boolean shown) {
+        chart.showLegend(shown);
+    }
+
+    public void addCustomData(String name, CustomType type, double[] vars) {
+        chart.addCustomData(name, type, vars);
     }
 
     @Override
