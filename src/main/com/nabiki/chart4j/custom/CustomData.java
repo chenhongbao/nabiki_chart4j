@@ -33,7 +33,7 @@ import java.util.Arrays;
 public class CustomData {
     private final String name;
     private final CustomType type;
-    private final double[] value;
+    private final Double[] value;
 
     public String getName() {
         return name;
@@ -43,11 +43,11 @@ public class CustomData {
         return type;
     }
 
-    public double[] getValue() {
+    public Double[] getValue() {
         return value;
     }
 
-    public CustomData(String name, CustomType type, double[] vars) {
+    public CustomData(String name, CustomType type, Double[] vars) {
         this.name = name;
         this.type = type;
         this.value = Arrays.copyOf(vars, vars.length);

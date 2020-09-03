@@ -63,7 +63,7 @@ public class StickChartPanel extends ImagePanel {
         chart.showLegend(shown);
     }
 
-    public void addCustomData(String name, CustomType type, double[] vars) {
+    public void addCustomData(String name, CustomType type, Double[] vars) {
         chart.addCustomData(name, type, vars);
     }
 

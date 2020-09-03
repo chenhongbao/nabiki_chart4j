@@ -51,8 +51,8 @@ public class LegendTest {
         legend.setOffset(100, 200);
         legend.setMargin(10, 10, 10, 10);
 
-        double[] line = new double[] {1.0, 2.9, 3.0, 5.7, 3.0, 2.3, 1.1};
-        double[] dot = new double[] {3.0, 4.9, 1.0, 7.7, 5.0, 0.3, 2.1};
+        Double[] line = new Double[] {1.0, 2.9, 3.0, 5.7, 3.0, 2.3, 1.1};
+        Double[] dot = new Double[] {3.0, 4.9, 1.0, 7.7, 5.0, 0.3, 2.1};
 
         var d0 = new CustomData("line", new CustomType(Color.PINK, CustomType.LINE), line);
         var d1 = new CustomData("dot", new CustomType(Color.CYAN, CustomType.DOT), dot);

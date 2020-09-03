@@ -58,7 +58,7 @@ public class CustomStickChart extends StickChart {
                 DefaultStyles.LEGEND_MARGIN);
     }
 
-    public void addCustomData(String name, CustomType type, double[] vars) {
+    public void addCustomData(String name, CustomType type, Double[] vars) {
         synchronized (data) {
             data.put(name, new CustomData(name, type, vars));
         }
@@ -110,9 +110,12 @@ public class CustomStickChart extends StickChart {
         for (int i = line.getValue().length - 1;
              0 <= i && revIdx < getX().length;
              --i, ++revIdx) {
+            var value = line.getValue()[i];
+            if (value == null)
+                continue;
             var idx = getX().length - 1 - revIdx;
             var pixelX = getVisiblePixelX(idx, xAxisMin, xAxisMax);
-            var pixelY = getVisiblePixelY(line.getValue()[i], yAxisMin, yAxisMax);
+            var pixelY = getVisiblePixelY(value, yAxisMin, yAxisMax);
             if (pixelX0 >= 0 && pixelY0 >= 0)
                 drawVisibleLine(pixelX, pixelY, pixelX0, pixelY0);
             // Move to next point.
@@ -136,9 +139,12 @@ public class CustomStickChart extends StickChart {
         for (int i = dot.getValue().length - 1;
              0 <= i && revIdx < getX().length;
              --i, ++revIdx) {
+            var value = dot.getValue()[i];
+            if (value == null)
+                continue;
             var idx = getX().length - 1 - revIdx;
             var pixelX = getVisiblePixelX(idx, xAxisMin, xAxisMax);
-            var pixelY = getVisiblePixelY(dot.getValue()[i], yAxisMin, yAxisMax);
+            var pixelY = getVisiblePixelY(value, yAxisMin, yAxisMax);
             var fromPixelX = pixelX - DefaultStyles.DOT_WIDTH / 2;
             var toPixelX = fromPixelX + DefaultStyles.DOT_WIDTH;
             drawVisibleLine(fromPixelX, pixelY, toPixelX, pixelY);
