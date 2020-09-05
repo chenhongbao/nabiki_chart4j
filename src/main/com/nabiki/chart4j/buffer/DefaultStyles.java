@@ -31,7 +31,8 @@ package com.nabiki.chart4j.buffer;
 import java.awt.*;
 
 public class DefaultStyles {
-    public static int AXIS_DEFAULT_LABEL_COUNT = 7;
+    public static int AXIS_DEFAULT_Y_LABEL_COUNT = 7;
+    public static int AXIS_DEFAULT_X_LABEL_COUNT = 10;
 
     public static int TEXTVIEW_FONT_BLANK_WIDTH = 15;
     public static float TEXTVIEW_FONT_SIZE = 18;
@@ -79,4 +80,7 @@ public class DefaultStyles {
     public static int LEGEND_MARGIN = 10;
 
     public static int DOT_WIDTH = 5;
+
+    public static int VIEW_DEFAULT_WINSIZE = 60;
+    public static int VIEW_MIN_WINSIZE = 10;
 }

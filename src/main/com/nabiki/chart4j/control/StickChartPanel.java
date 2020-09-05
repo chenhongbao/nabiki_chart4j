@@ -47,6 +47,18 @@ public class StickChartPanel extends ImagePanel {
         prepare();
     }
 
+    public CustomStickChart getChart() {
+        return chart;
+    }
+
+    public XAxis getXAxis() {
+        return x;
+    }
+
+    public YAxis getYAxis() {
+        return y;
+    }
+
     public void setData(double[] open, double[] high, double[] low, double[] close) {
         synchronized (chart) {
             chart.setData(open, high, low, close);
@@ -63,7 +75,7 @@ public class StickChartPanel extends ImagePanel {
         chart.showLegend(shown);
     }
 
-    public void addCustomData(String name, CustomType type, Double[] vars) {
+    public void setCustomData(String name, CustomType type, Double[] vars) {
         chart.addCustomData(name, type, vars);
     }
 

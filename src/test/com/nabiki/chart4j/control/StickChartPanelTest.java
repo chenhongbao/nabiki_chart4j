@@ -72,8 +72,8 @@ public class StickChartPanelTest {
         chart.setData(open, high, low, close);
         chart.setY(sampleY);
 
-        chart.addCustomData("line", new CustomType(Color.BLACK, CustomType.LINE), line);
-        chart.addCustomData("dot", new CustomType(Color.MAGENTA, CustomType.DOT), dot);
+        chart.setCustomData("line", new CustomType(Color.BLACK, CustomType.LINE), line);
+        chart.setCustomData("dot", new CustomType(Color.MAGENTA, CustomType.DOT), dot);
 
         var dialog = new JDialog();
 

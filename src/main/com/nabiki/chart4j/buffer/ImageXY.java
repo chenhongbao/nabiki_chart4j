@@ -31,14 +31,13 @@ package com.nabiki.chart4j.buffer;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
-import static com.nabiki.chart4j.buffer.DefaultStyles.AXIS_DEFAULT_LABEL_COUNT;
+import static com.nabiki.chart4j.buffer.DefaultStyles.AXIS_DEFAULT_Y_LABEL_COUNT;
 
 public abstract class ImageXY extends ImageCanvas implements XYCoordinate {
     private double[] x, y;
-    private double maxX = -Double.MAX_VALUE, maxY = -Double.MAX_VALUE,
-            minX = Double.MAX_VALUE, minY = Double.MAX_VALUE;
-    private int preferredLabelCountX = AXIS_DEFAULT_LABEL_COUNT,
-            preferredLabelCountY = AXIS_DEFAULT_LABEL_COUNT;
+    private double maxX, maxY, minX, minY;
+    private int preferredLabelCountX = AXIS_DEFAULT_Y_LABEL_COUNT,
+            preferredLabelCountY = AXIS_DEFAULT_Y_LABEL_COUNT;
 
     public ImageXY() {}
 
@@ -51,6 +50,8 @@ public abstract class ImageXY extends ImageCanvas implements XYCoordinate {
     public void setX(double... labels) {
         if (labels.length > 0)
             x = Arrays.copyOf(labels, labels.length);
+        maxX = -Double.MAX_VALUE;
+        minX = Double.MAX_VALUE;
         for (var l : labels) {
             maxX = Math.max(maxX, l);
             minX = Math.min(minX, l);
@@ -66,6 +67,8 @@ public abstract class ImageXY extends ImageCanvas implements XYCoordinate {
     public void setY(double... labels) {
         if (labels.length > 0)
             y = Arrays.copyOf(labels, labels.length);
+        maxY = -Double.MAX_VALUE;
+        minY = Double.MAX_VALUE;
         for (var l : labels) {
             maxY = Math.max(maxY, l);
             minY = Math.min(minY, l);
