@@ -112,8 +112,8 @@ public class StickChartPanel extends ImagePanel {
 
     private Dimension getProperChartSize(Dimension total) {
         var r = new Dimension();
-        r.width = total.width - DefaultStyles.AXIS_Y_WIDTH;
-        r.height = total.height - DefaultStyles.AXIS_X_HEIGHT;
+        r.width = total.width - DefaultStyles.AXIS_Y_WIDTH - DefaultStyles.CHART_OFFSET;
+        r.height = total.height - DefaultStyles.AXIS_X_HEIGHT - DefaultStyles.CHART_OFFSET;
         return r;
     }
 
@@ -131,7 +131,9 @@ public class StickChartPanel extends ImagePanel {
     }
 
     private void prepare() {
-        chart.setOffset(0, 0);
+        chart.setOffset(
+                DefaultStyles.CHART_OFFSET,
+                DefaultStyles.CHART_OFFSET);
         chart.setMargin(
                 DefaultStyles.CHART_MARGIN,
                 DefaultStyles.CHART_MARGIN,

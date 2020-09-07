@@ -38,4 +38,8 @@ public interface ViewController {
     void zoomIn();
 
     void zoomOut();
+
+    int getDataCount();
+
+    int getShownSize();
 }

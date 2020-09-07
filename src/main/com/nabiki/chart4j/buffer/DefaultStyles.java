@@ -72,7 +72,8 @@ public class DefaultStyles {
 
     public static Stroke STICK_STROKE = new BasicStroke(1.0f);
 
-    public static int CHART_MARGIN = 50;
+    public static int CHART_MARGIN = 20;
+    public static int CHART_OFFSET = 10;
 
     public static int LEGEND_SINGLE_HEIGHT = 20;
     public static int LEGEND_BLANK_WIDTH = 20;

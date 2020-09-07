@@ -116,6 +116,16 @@ public class StickChartController implements ViewController {
         updateChart();
     }
 
+    @Override
+    public int getDataCount() {
+        return sticks.size();
+    }
+
+    @Override
+    public int getShownSize() {
+        return windowSize;
+    }
+
     private void updateChart() {
         extractCurrentData();
         paintCurrentData();

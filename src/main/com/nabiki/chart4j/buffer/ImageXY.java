@@ -31,13 +31,11 @@ package com.nabiki.chart4j.buffer;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
-import static com.nabiki.chart4j.buffer.DefaultStyles.AXIS_DEFAULT_Y_LABEL_COUNT;
-
 public abstract class ImageXY extends ImageCanvas implements XYCoordinate {
     private double[] x, y;
     private double maxX, maxY, minX, minY;
-    private int preferredLabelCountX = AXIS_DEFAULT_Y_LABEL_COUNT,
-            preferredLabelCountY = AXIS_DEFAULT_Y_LABEL_COUNT;
+    private int preferredLabelCountX = DefaultStyles.AXIS_DEFAULT_X_LABEL_COUNT,
+            preferredLabelCountY = DefaultStyles.AXIS_DEFAULT_Y_LABEL_COUNT;
 
     public ImageXY() {}
 
