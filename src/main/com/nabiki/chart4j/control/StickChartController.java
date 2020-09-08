@@ -89,31 +89,31 @@ public class StickChartController implements ViewController {
     @Override
     public void forward(int count) {
         cursor = Math.min(cursor + count, this.sticks.size() - 1);
-        updateChart();
+        update();
     }
 
     @Override
     public void backward(int count) {
         cursor = Math.max(cursor - count, 0);
-        updateChart();
+        update();
     }
 
     @Override
     public void reset() {
         cursor = this.sticks.size() - 1;
-        updateChart();
+        update();
     }
 
     @Override
     public void zoomIn() {
         windowSize = Math.max(windowSize / 2, DefaultStyles.VIEW_MIN_WINSIZE);
-        updateChart();
+        update();
     }
 
     @Override
     public void zoomOut() {
         windowSize *= 2;
-        updateChart();
+        update();
     }
 
     @Override
@@ -124,6 +124,11 @@ public class StickChartController implements ViewController {
     @Override
     public int getShownSize() {
         return windowSize;
+    }
+
+    @Override
+    public void update() {
+        updateChart();
     }
 
     private void updateChart() {
@@ -154,7 +159,7 @@ public class StickChartController implements ViewController {
             // Set customs' data.
             for (var entry : customs.entrySet()) {
                 var key = entry.getKey();
-                var val = sticks.get(index).customs.get(key);
+                var val = sticks.get(index).customs.get(key); // TODO custom value could be null if it not set
                 customs.get(key)[tmpIdx] = val;
                 // Check min/max values of custom data.
                 maxY = Math.max(maxY, val);

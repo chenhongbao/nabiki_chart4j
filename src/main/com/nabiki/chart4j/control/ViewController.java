@@ -42,4 +42,6 @@ public interface ViewController {
     int getDataCount();
 
     int getShownSize();
+
+    void update();
 }
