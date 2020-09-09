@@ -76,10 +76,15 @@ public class StickChart extends GridXY {
         return sample;
     }
 
+    // TODO the stick would overflow the border when frame is big but sticks are few.
     private void paintSticks() {
+        // No data at init.
+        if (getY() == null || getY().length == 0)
+            return;
+        // Or it already has data.
         var xLabels = getShowLabelX();
         var yLabels = getShowLabelY();
-        var xAxisMin = xLabels[0];  // TODO at start up, the chart is empty, index out of bound
+        var xAxisMin = xLabels[0];
         var xAxisMax = xLabels[xLabels.length-1];
         var yAxisMin = yLabels[0];
         var yAxisMax = yLabels[yLabels.length-1];

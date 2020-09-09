@@ -48,6 +48,7 @@ public class StickChartController implements ViewController {
     private final List<CustomStick> sticks = new LinkedList<>();
     private final StickChartPanel chart;
 
+    private boolean resetCursor = true;
     private int cursor;
     private int windowSize = DefaultStyles.VIEW_DEFAULT_WINSIZE;
 
@@ -78,6 +79,8 @@ public class StickChartController implements ViewController {
         stick.close = close;
         stick.label = xLabel;
         this.sticks.add(stick);
+        // Set cursor for new stick.
+        setCursor();
     }
 
     public void append(String name, Double value) {
@@ -88,19 +91,22 @@ public class StickChartController implements ViewController {
 
     @Override
     public void forward(int count) {
+        setResetCursor(false);
         cursor = Math.min(cursor + count, this.sticks.size() - 1);
         update();
     }
 
     @Override
     public void backward(int count) {
+        setResetCursor(false);
         cursor = Math.max(cursor - count, 0);
         update();
     }
 
     @Override
     public void reset() {
-        cursor = this.sticks.size() - 1;
+        setResetCursor(true);
+        setCursor();
         update();
     }
 
@@ -131,6 +137,19 @@ public class StickChartController implements ViewController {
         updateChart();
     }
 
+    private void setCursor() {
+        if (resetCursor)
+            cursor = sticks.size() - 1;
+    }
+
+    private void setResetCursor(boolean reset) {
+        resetCursor = reset;
+    }
+
+    private int getProperArraySize() {
+        return Math.min(this.sticks.size(), windowSize);
+    }
+
     private void updateChart() {
         extractCurrentData();
         paintCurrentData();
@@ -138,16 +157,17 @@ public class StickChartController implements ViewController {
 
     private void extractCurrentData() {
         double maxY = -Double.MAX_VALUE, minY = Double.MAX_VALUE;
-        open = new double[windowSize];
-        high = new double[windowSize];
-        low = new double[windowSize];
-        close = new double[windowSize];
-        chartY = new double[windowSize];
+        var size = getProperArraySize();
+        open = new double[size];
+        high = new double[size];
+        low = new double[size];
+        close = new double[size];
+        chartY = new double[size];
         customs.clear();
         mapLabels.clear();
         for (var key : types.keySet())
-            customs.put(key, new Double[windowSize]);
-        int tmpIdx = windowSize - 1;
+            customs.put(key, new Double[size]);
+        int tmpIdx = size - 1;
         for (int index = cursor;
              0 <= index && 0 <= tmpIdx;
              --index, -- tmpIdx) {
@@ -159,11 +179,14 @@ public class StickChartController implements ViewController {
             // Set customs' data.
             for (var entry : customs.entrySet()) {
                 var key = entry.getKey();
-                var val = sticks.get(index).customs.get(key); // TODO custom value could be null if it not set
+                var val = sticks.get(index).customs.get(key);
                 customs.get(key)[tmpIdx] = val;
                 // Check min/max values of custom data.
-                maxY = Math.max(maxY, val);
-                minY = Math.min(minY, val);
+                // Custom value could be null if it is not set.
+                if (val != null) {
+                    maxY = Math.max(maxY, val);
+                    minY = Math.min(minY, val);
+                }
             }
         }
         // Summarize overall min/max.
@@ -192,6 +215,7 @@ public class StickChartController implements ViewController {
                     types.get(entry.getKey()),
                     entry.getValue());
         this.chart.getXAxis().mapLabels(mapLabels);
+        this.chart.getXAxis().paint();
         this.chart.getYAxis().paint();
         this.chart.getChart().paint();
         this.chart.updateUI();

@@ -100,12 +100,14 @@ public abstract class ImageXY extends ImageCanvas implements XYCoordinate {
 
     @Override
     public double[] getShowLabelX() {
-        return getPreferredLabels(minX, maxX, getPreferredLabelCountX());
+        var properMaxX = minX == maxX ? minX + 1 : maxX;
+        return getPreferredLabels(minX, properMaxX, getPreferredLabelCountX());
     }
 
     @Override
     public double[] getShowLabelY() {
-        return getPreferredLabels(minY, maxY, getPreferredLabelCountY());
+        var properMaxY = minY == maxY ? minY + 1 : maxY;
+        return getPreferredLabels(minY, properMaxY, getPreferredLabelCountY());
     }
 
     @Override
