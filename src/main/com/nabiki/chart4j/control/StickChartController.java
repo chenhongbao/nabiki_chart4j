@@ -99,7 +99,7 @@ public class StickChartController implements ViewController {
     @Override
     public void backward(int count) {
         setResetCursor(false);
-        cursor = Math.max(cursor - count, 0);
+        cursor = Math.max(cursor - count, getProperWindowSize());
         update();
     }
 
@@ -146,7 +146,7 @@ public class StickChartController implements ViewController {
         resetCursor = reset;
     }
 
-    private int getProperArraySize() {
+    private int getProperWindowSize() {
         return Math.min(this.sticks.size(), windowSize);
     }
 
@@ -157,7 +157,7 @@ public class StickChartController implements ViewController {
 
     private void extractCurrentData() {
         double maxY = -Double.MAX_VALUE, minY = Double.MAX_VALUE;
-        var size = getProperArraySize();
+        var size = getProperWindowSize();
         open = new double[size];
         high = new double[size];
         low = new double[size];
