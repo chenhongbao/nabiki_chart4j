@@ -99,7 +99,7 @@ public class StickChartController implements ViewController {
     @Override
     public void backward(int count) {
         setResetCursor(false);
-        cursor = Math.max(cursor - count, getProperWindowSize());
+        cursor = Math.max(cursor - count, getProperWindowSize() - 1);
         update();
     }
 
