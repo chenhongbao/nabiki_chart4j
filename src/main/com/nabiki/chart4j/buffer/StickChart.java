@@ -76,7 +76,6 @@ public class StickChart extends GridXY {
         return sample;
     }
 
-    // TODO the stick would overflow the border when frame is big but sticks are few.
     private void paintSticks() {
         // No data at init.
         if (getY() == null || getY().length == 0)
@@ -100,6 +99,27 @@ public class StickChart extends GridXY {
 
     }
 
+    private int fitVisibleX(int pixel) {
+        var margin = getMargin();
+        var visible = getVisibleSize();
+        if (pixel < -margin[0])
+            return -margin[0];
+        else if (pixel > margin[0] + visible[0])
+            return margin[0] + visible[0];
+        else
+            return pixel;
+    }
+
+    private int fitVisibleY(int pixel) {
+        var visible = getVisibleSize();
+        if (pixel < 0)
+            return 0;
+        else if (pixel > visible[1])
+            return visible[1];
+        else
+            return pixel;
+    }
+
     private int getPaintWidth() {
         return (int)(getVisibleSize()[0] / (open.length + 1.0D)
                 * (1 - DefaultStyles.X_NODE_BLANK_PORTION));
@@ -120,9 +140,21 @@ public class StickChart extends GridXY {
         setColor(color);
         // Paint sticks.
         var offsetW = getPaintWidth() / 2;
-        drawVisibleLine(pixelX, pixelHigh, pixelX, pixelLow);
-        drawVisibleLine(pixelX - offsetW, pixelOpen, pixelX, pixelOpen);
-        drawVisibleLine(pixelX, pixelClose, pixelX + offsetW, pixelClose);
+        drawVisibleLine(
+                pixelX,
+                fitVisibleY(pixelHigh),
+                pixelX,
+                fitVisibleY(pixelLow));
+        drawVisibleLine(
+                fitVisibleX(pixelX - offsetW),
+                fitVisibleY(pixelOpen),
+                pixelX,
+                fitVisibleY(pixelOpen));
+        drawVisibleLine(
+                pixelX,
+                fitVisibleY(pixelClose),
+                fitVisibleX(pixelX + offsetW),
+                fitVisibleY(pixelClose));
         setColor(oldColor);
         setStroke(stroke);
     }
