@@ -37,7 +37,8 @@ public abstract class AbstractAxis extends ImageCanvas implements Axis {
     protected String name;
     protected XYCoordinate xy;
 
-    public AbstractAxis() {}
+    public AbstractAxis() {
+    }
 
     public AbstractAxis(BufferedImage image) {
         super(image);
@@ -68,10 +69,14 @@ public abstract class AbstractAxis extends ImageCanvas implements Axis {
     protected abstract void paintLabel(double label, double axisMin, double axisMax);
 
     protected String getLabelString(double label) {
-        var str = map.get(label);
-        if (str == null)
+        if (map.isEmpty())
             return String.format("%.1f", label);
-        else
-            return str;
+        else {
+            var str = map.get(label);
+            if (str == null)
+                return "";
+            else
+                return str;
+        }
     }
 }
