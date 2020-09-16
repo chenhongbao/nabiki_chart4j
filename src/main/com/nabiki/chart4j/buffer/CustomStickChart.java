@@ -38,7 +38,7 @@ import java.util.Map;
 public class CustomStickChart extends StickChart {
     private final Map<String, CustomData> data = new HashMap<>();
     private final Legend legend = new Legend();
-    private boolean legendShown = true;
+    private boolean legendShown = false;
 
     public CustomStickChart() {
         legend.setMargin(
@@ -60,6 +60,8 @@ public class CustomStickChart extends StickChart {
 
     public void addCustomData(String name, CustomType type, Double[] vars) {
         synchronized (data) {
+            // Only when there is custom data, show legend.
+            legendShown = true;
             data.put(name, new CustomData(name, type, vars));
         }
     }
